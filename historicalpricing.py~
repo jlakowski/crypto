@@ -1,0 +1,17 @@
+import urllib, json
+import numpy as np
+
+n = 60
+url = "https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=60&aggregate=3&e=CCCAGG"
+
+response = urllib.urlopen(url)
+data = json.loads(response.read())
+t = np.array([])
+closep = np.array([])
+openp = np.array([])
+lowp = np.array([])
+highp = np.array([])
+
+
+for i in range(0,n):
+    t[i] = data['Data'][i]['time']
