@@ -40,5 +40,5 @@ for i in range(0, (n/24 *3)):
     else:
         uprdown.append('g')
 
-plt.stem(ts, cov, c=uprdown)
+plt.scatter(ts, cov, c=uprdown)
 plt.show()
