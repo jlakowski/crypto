@@ -1,8 +1,12 @@
 import urllib, json
 import numpy as np
 import matplotlib.pyplot as plt
-n = 60
-url = "https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=60&aggregate=3&e=CCCAGG"
+n = 660 # 660 hours or 27 days of data
+
+#TODO create a method or a few lines that build up the api call from scratch
+#so you can choose the asset / time period / limit etc
+
+url = "https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=660&aggregate=1&e=CCCAGG"
 
 response = urllib.urlopen(url)
 data = json.loads(response.read())
@@ -19,6 +23,22 @@ for i in range(0,n):
     lowp[i]  = data['Data'][i]['low']
     highp[i] = data['Data'][i]['high']
 
+sigma = np.zeros(n/24 *3)
+mean = np.zeros(n/24 *3)
+cov = np.zeros(n/24 *3)
+ts = np.zeros(n/24 *3)
+uprdown = np.zeros(n/24 *3)
 
-plt.plot(t, openp)
+for i in range(0, (n/24 *3)):
+    #so we're taking data every hour which means that 8 hours is 1/3 of a day
+    sigma[i] = np.std(closep[8*i:8*(i+1)])
+    mean[i] =  np.mean(closep[8*i:8*(i+1)])
+    cov[i] = sigma[i] / mean[i] *np.sqrt(0.333333)
+    ts[i] = t[8*i]
+    if closep[8*i] > closep[8*(i+1)]:
+        uprdown[i] = -1 #there is a loss on the 8 hour time interval
+    else:
+        uprdown[i] = 1
+
+plt.plot(ts, cov)
 plt.show()
