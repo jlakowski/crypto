@@ -28,6 +28,8 @@ mean = np.zeros(n/24 *3)
 cov = np.zeros(n/24 *3)
 ts = np.zeros(n/24 *3)
 uprdown = []
+covup = np.zeros(n/24 *3)
+covdn = np.zeros(n/24 *3)
 
 for i in range(0, (n/24 *3)):
     #so we're taking data every hour which means that 8 hours is 1/3 of a day
@@ -36,9 +38,19 @@ for i in range(0, (n/24 *3)):
     cov[i] = sigma[i] / mean[i] *np.sqrt(0.333333)
     ts[i] = t[8*i]
     if closep[8*i] > closep[8*(i+1)]:
-        uprdown.append('r') #there is a loss on the 8 hour time interval
+        uprdown.append('#FF0000') #there is a loss on the 8 hour time interval
+        covup[i] = 0
+        covdn[i] = cov[i]
     else:
-        uprdown.append('g')
+        uprdown.append('#00FF00')
+        covup[i] = cov[i]
+        covdn[i] = 0
 
-plt.stem(ts, cov, c=uprdown)
+plt.hold(True)
+#plt.scatter(ts, cov, c=uprdown)
+markerlineu, stemlinesu, baselineu = plt.stem(ts,covup, markerfmt=" ")
+plt.setp(stemlinesu, 'color', 'g', 'linewidth', 4)
+markerlined, stemlinesd, baselined = plt.stem(ts,covdn, markerfmt=" ")
+plt.setp(stemlinesd, 'color', 'r', 'linewidth', 4)
 plt.show()
+
