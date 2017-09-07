@@ -46,15 +46,17 @@ for i in range(0, (n/24 *3)):
         covup[i] = cov[i]
         covdn[i] = 0
 
-plt.figure()
-plt.hold(True)
+
+
+f, axarr = plt.subplots(2,sharex=True)
+axarr[0].plot(t, closep)
+
+axarr[1].hold(True)
 #plt.scatter(ts, cov, c=uprdown)
-markerlineu, stemlinesu, baselineu = plt.stem(ts,covup, markerfmt=" ")
+markerlineu, stemlinesu, baselineu = axarr[1].stem(ts,covup, markerfmt=" ")
 plt.setp(stemlinesu, 'color', 'g', 'linewidth', 4)
-markerlined, stemlinesd, baselined = plt.stem(ts,covdn, markerfmt=" ")
+markerlined, stemlinesd, baselined = axarr[1].stem(ts,covdn, markerfmt=" ")
 plt.setp(stemlinesd, 'color', 'r', 'linewidth', 4)
 
 
-plt.figure()
-plt.plot(t, closep)
 plt.show()
