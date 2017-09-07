@@ -6,7 +6,7 @@ n = 660 # 660 hours or 27 days of data
 #TODO create a method or a few lines that build up the api call from scratch
 #so you can choose the asset / time period / limit etc
 
-url = "https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=660&aggregate=1&e=CCCAGG"
+url = "https://min-api.cryptocompare.com/data/histohour?fsym=LTC&tsym=USD&limit=660&aggregate=1&e=CCCAGG"
 
 response = urllib.urlopen(url)
 data = json.loads(response.read())
@@ -46,11 +46,15 @@ for i in range(0, (n/24 *3)):
         covup[i] = cov[i]
         covdn[i] = 0
 
+plt.figure()
 plt.hold(True)
 #plt.scatter(ts, cov, c=uprdown)
 markerlineu, stemlinesu, baselineu = plt.stem(ts,covup, markerfmt=" ")
 plt.setp(stemlinesu, 'color', 'g', 'linewidth', 4)
 markerlined, stemlinesd, baselined = plt.stem(ts,covdn, markerfmt=" ")
 plt.setp(stemlinesd, 'color', 'r', 'linewidth', 4)
-plt.show()
 
+
+plt.figure()
+plt.plot(t, closep)
+plt.show()
